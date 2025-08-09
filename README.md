@@ -1,22 +1,21 @@
-# PulseBoard v2 — Live Design + 1s Price Updates (Selected Token)
+# PulseBoard v3 — Fixes + WebSocket Live + Fallbacks
 
-What's new vs v1:
-- **Refined design**: glassmorphism, animated status, cleaner cards, shimmering loaders.
-- **Live 1s updates for selected token** with adaptive backoff when rate-limited.
-- Smoother, no-legend mini chart that grows with 1s ticks (keeps last 60 points).
-- Same features: Top coins, watchlist, predictions (1h/4h/24h), new pairs from Dexscreener, fiat/interval controls.
+**What’s fixed**
+- Buttons work regardless of CoinGecko rate limits.
+- Token details load even if top list fails.
+- Price predictions work with Binance **1m klines** when CoinGecko history is blocked.
+- **Binance WebSocket** live price for selected token (auto maps SYMBOL → SYMBOLUSDT). Manual override field if listing differs.
+- New Pairs shows errors and continues; uses HTTPS and displays retries.
 
-## Notes on "by second" updates
-- The selected token uses CoinGecko Simple Price every second. If the API rate-limits your IP, the app auto-backs off (2 → 5 → 10 → 20s) and resumes 1s when possible.
-- The **Top Coins** table refreshes on your chosen interval (default 5s) to reduce chances of rate-limit.
+**How to use**
+1. Download and unzip.
+2. Open `index.html`.
+3. Add/search a token (bitcoin, ethereum, solana) → click to open. Live price will use Binance WS.
+4. If ticker mapping is wrong, type the correct one (e.g., `ARBUSDT`, `WIFUSDT`, `WETHUSDT`) in the field and press **Use**.
+5. Predictions will compute from CoinGecko minute data or Binance klines fallback.
 
-## Quick Start
-1. Download the ZIP and unzip.
-2. Open `index.html`. Add a token (e.g., bitcoin) and click it to open. The price ticks every second.
-3. Adjust update interval for the top list in the header.
-4. Use "New Pairs" to fetch latest pairs from Dexscreener.
+**Deploy**
+- Push the 3 files to a public GitHub repo → Settings → Pages → Deploy from branch → `/root`.
 
-## Deploy on GitHub Pages
-- Same as v1: push files to a public repo, then Settings → Pages → Deploy from branch → /root.
-
-> This dashboard is educational. Predictions are heuristics only and **not** financial advice.
+**Notes**
+- All client-side, no keys. Some assets may still rate-limit under heavy use; WS avoids most issues.

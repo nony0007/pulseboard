@@ -57,3 +57,6 @@ body{margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetic
 .skeleton{position:relative}
 .skeleton:empty::after{content:"";display:block;height:120px;background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.08),rgba(255,255,255,.04));border-radius:12px;animation:shimmer 1.4s infinite}
 @keyframes shimmer{0%{background-position:-200px 0}100%{background-position:200px 0}}
+.toast{position:fixed;bottom:16px;right:16px;background:#0e1a34;border:1px solid var(--border);padding:10px 14px;border-radius:12px;opacity:0;transform:translateY(10px);transition:.25s;color:var(--text);max-width:360px}
+.toast.show{opacity:1;transform:translateY(0)}
+.error{color:#fda4af;margin-top:6px}

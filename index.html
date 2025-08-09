@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PulseBoard v2 — Live Crypto Dashboard</title>
+  <title>PulseBoard v3 — Live Crypto Dashboard</title>
   <meta name="theme-color" content="#0a1224">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -15,15 +15,14 @@
   <header class="topbar glass">
     <div class="brand">
       <span class="logo">⚡</span>
-      <span class="title">PulseBoard <span class="badge">v2</span></span>
+      <span class="title">PulseBoard <span class="badge">v3</span></span>
     </div>
     <div class="top-actions">
       <input id="searchToken" placeholder="Search token (e.g., bitcoin, eth)">
       <button id="addToken" class="btn">Add</button>
       <button id="refreshNow" class="btn">Refresh</button>
-      <label class="chip">Update
+      <label class="chip">Top Update
         <select id="refreshInt" class="select">
-          <option value="1">1s (selected)</option>
           <option value="5" selected>5s</option>
           <option value="10">10s</option>
           <option value="20">20s</option>
@@ -47,6 +46,7 @@
         <div class="status"><span id="statusText">Idle</span> • <span id="lastUpdate">—</span></div>
       </div>
       <div id="topCoins" class="table skeleton"></div>
+      <div id="topError" class="error small"></div>
     </section>
 
     <section class="card span-4">
@@ -55,25 +55,33 @@
         <div><button id="clearWatch" class="btn subtle">Clear</button></div>
       </div>
       <div id="watchlist" class="watchlist skeleton"></div>
-      <div class="hint">Tip: add tokens, then click one to open details. Selected token updates every second (with backoff if needed).</div>
+      <div class="hint">Tip: add tokens, then click one to open details. Selected token uses WebSocket when possible.</div>
     </section>
 
     <section class="card span-12">
-      <div class="card-head"><h2>Token Details & Live Chart</h2></div>
+      <div class="card-head"><h2>Token Details, Live Feed & Predictions</h2></div>
       <div id="tokenDetails" class="token-details">
         <div class="left">
           <div class="row">
             <div class="name" id="tdName">—</div>
-            <div class="live">
-              <span class="dot"></span>
-              <span id="liveStatus">Live</span>
-            </div>
+            <div class="live"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></div>
           </div>
+
           <div class="price-row">
             <div class="price" id="tdPrice">—</div>
             <div id="tdPriceChange" class="change">—</div>
           </div>
+
           <div class="row stats" id="tdStats">—</div>
+
+          <div class="ws">
+            <label class="chip">Exchange ticker (WS)
+              <input id="wsTicker" class="select" placeholder="e.g., BTCUSDT">
+              <button id="applyWsTicker" class="btn">Use</button>
+            </label>
+            <div class="small">Auto-maps to SYMBOLUSDT. Edit if listing is different (e.g., WETHUSDT, ARBUSDT).</div>
+          </div>
+
           <div class="predictions">
             <div class="pred" id="pred1h">1h: —</div>
             <div class="pred" id="pred4h">4h: —</div>
@@ -85,6 +93,7 @@
           <canvas id="miniChart"></canvas>
         </div>
       </div>
+      <div id="detailError" class="error small"></div>
     </section>
 
     <section class="card span-12">
@@ -108,11 +117,14 @@
         <button id="loadPairs" class="btn">Load Newest</button>
       </div>
       <div id="pairs" class="pairs skeleton"></div>
+      <div id="pairError" class="error small"></div>
     </section>
   </main>
 
+  <div id="toast" class="toast"></div>
+
   <footer class="footer">
-    <span>PulseBoard v2 © 2025 — Client-side app using CoinGecko & Dexscreener. Not financial advice.</span>
+    <span>PulseBoard v3 © 2025 — Client-side app using CoinGecko, Binance & Dexscreener. Not financial advice.</span>
   </footer>
 
   <script src="app.js"></script>
