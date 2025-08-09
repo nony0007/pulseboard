@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PulseBoard — Realtime Crypto & Heuristic Predictions</title>
+  <meta name="theme-color" content="#0b1220">
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js for mini charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">⚡ PulseBoard</div>
+    <div class="top-actions">
+      <input id="searchToken" placeholder="Search token (e.g., bitcoin, eth)">
+      <button id="addToken">Add to Watchlist</button>
+      <button id="refreshNow">Refresh</button>
+      <label class="interval">Update
+        <select id="refreshInt">
+          <option value="10">10s</option>
+          <option value="20" selected>20s</option>
+          <option value="30">30s</option>
+          <option value="60">60s</option>
+        </select>
+      </label>
+      <label>Fiat
+        <select id="fiat">
+          <option value="usd" selected>USD</option>
+          <option value="eur">EUR</option>
+          <option value="gbp">GBP</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="card span-8">
+      <h2>Top Coins</h2>
+      <div id="topCoins" class="table"></div>
+    </section>
+
+    <section class="card span-4">
+      <h2>Watchlist</h2>
+      <div id="watchlist"></div>
+      <div class="hint">Tip: search a token and click "Add to Watchlist".</div>
+    </section>
+
+    <section class="card span-12">
+      <h2>Token Details & Predictions</h2>
+      <div id="tokenDetails" class="token-details">
+        <div class="left">
+          <div class="row">
+            <div class="name" id="tdName">—</div>
+            <div class="price" id="tdPrice">—</div>
+          </div>
+          <div class="row stats" id="tdStats">—</div>
+          <div class="predictions">
+            <div class="pred" id="pred1h">1h: —</div>
+            <div class="pred" id="pred4h">4h: —</div>
+            <div class="pred" id="pred24h">24h: —</div>
+          </div>
+          <div class="disclaimer">Predictions are simple heuristics using recent trend/volatility/volume. Not financial advice.</div>
+        </div>
+        <div class="right">
+          <canvas id="miniChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="card span-12">
+      <h2>New Pairs (Dexscreener)</h2>
+      <div class="controls">
+        <label>Chains
+          <select id="chains" multiple size="6">
+            <option value="ethereum" selected>Ethereum</option>
+            <option value="bsc" selected>BSC</option>
+            <option value="polygon" selected>Polygon</option>
+            <option value="base" selected>Base</option>
+            <option value="arbitrum" selected>Arbitrum</option>
+            <option value="optimism" selected>Optimism</option>
+            <option value="avalanche">Avalanche</option>
+            <option value="solana">Solana</option>
+            <option value="linea">Linea</option>
+            <option value="scroll">Scroll</option>
+            <option value="blast">Blast</option>
+          </select>
+        </label>
+        <button id="loadPairs">Load Newest</button>
+      </div>
+      <div id="pairs" class="pairs"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>PulseBoard © 2025 — Client-side app using CoinGecko & Dexscreener. For education only.</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
