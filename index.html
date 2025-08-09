@@ -3,29 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PulseBoard — Realtime Crypto & Heuristic Predictions</title>
-  <meta name="theme-color" content="#0b1220">
+  <title>PulseBoard v2 — Live Crypto Dashboard</title>
+  <meta name="theme-color" content="#0a1224">
   <link rel="stylesheet" href="style.css">
-  <!-- Chart.js for mini charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">⚡ PulseBoard</div>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <header class="topbar glass">
+    <div class="brand">
+      <span class="logo">⚡</span>
+      <span class="title">PulseBoard <span class="badge">v2</span></span>
+    </div>
     <div class="top-actions">
       <input id="searchToken" placeholder="Search token (e.g., bitcoin, eth)">
-      <button id="addToken">Add to Watchlist</button>
-      <button id="refreshNow">Refresh</button>
-      <label class="interval">Update
-        <select id="refreshInt">
+      <button id="addToken" class="btn">Add</button>
+      <button id="refreshNow" class="btn">Refresh</button>
+      <label class="chip">Update
+        <select id="refreshInt" class="select">
+          <option value="1">1s (selected)</option>
+          <option value="5" selected>5s</option>
           <option value="10">10s</option>
-          <option value="20" selected>20s</option>
+          <option value="20">20s</option>
           <option value="30">30s</option>
-          <option value="60">60s</option>
         </select>
       </label>
-      <label>Fiat
-        <select id="fiat">
+      <label class="chip">Fiat
+        <select id="fiat" class="select">
           <option value="usd" selected>USD</option>
           <option value="eur">EUR</option>
           <option value="gbp">GBP</option>
@@ -36,23 +42,36 @@
 
   <main class="grid">
     <section class="card span-8">
-      <h2>Top Coins</h2>
-      <div id="topCoins" class="table"></div>
+      <div class="card-head">
+        <h2>Top Coins</h2>
+        <div class="status"><span id="statusText">Idle</span> • <span id="lastUpdate">—</span></div>
+      </div>
+      <div id="topCoins" class="table skeleton"></div>
     </section>
 
     <section class="card span-4">
-      <h2>Watchlist</h2>
-      <div id="watchlist"></div>
-      <div class="hint">Tip: search a token and click "Add to Watchlist".</div>
+      <div class="card-head">
+        <h2>Watchlist</h2>
+        <div><button id="clearWatch" class="btn subtle">Clear</button></div>
+      </div>
+      <div id="watchlist" class="watchlist skeleton"></div>
+      <div class="hint">Tip: add tokens, then click one to open details. Selected token updates every second (with backoff if needed).</div>
     </section>
 
     <section class="card span-12">
-      <h2>Token Details & Predictions</h2>
+      <div class="card-head"><h2>Token Details & Live Chart</h2></div>
       <div id="tokenDetails" class="token-details">
         <div class="left">
           <div class="row">
             <div class="name" id="tdName">—</div>
+            <div class="live">
+              <span class="dot"></span>
+              <span id="liveStatus">Live</span>
+            </div>
+          </div>
+          <div class="price-row">
             <div class="price" id="tdPrice">—</div>
+            <div id="tdPriceChange" class="change">—</div>
           </div>
           <div class="row stats" id="tdStats">—</div>
           <div class="predictions">
@@ -60,7 +79,7 @@
             <div class="pred" id="pred4h">4h: —</div>
             <div class="pred" id="pred24h">24h: —</div>
           </div>
-          <div class="disclaimer">Predictions are simple heuristics using recent trend/volatility/volume. Not financial advice.</div>
+          <div class="disclaimer">Heuristic predictions using recent trend/volatility/volume. Educational only.</div>
         </div>
         <div class="right">
           <canvas id="miniChart"></canvas>
@@ -69,7 +88,7 @@
     </section>
 
     <section class="card span-12">
-      <h2>New Pairs (Dexscreener)</h2>
+      <div class="card-head"><h2>New Pairs (Dexscreener)</h2></div>
       <div class="controls">
         <label>Chains
           <select id="chains" multiple size="6">
@@ -86,14 +105,14 @@
             <option value="blast">Blast</option>
           </select>
         </label>
-        <button id="loadPairs">Load Newest</button>
+        <button id="loadPairs" class="btn">Load Newest</button>
       </div>
-      <div id="pairs" class="pairs"></div>
+      <div id="pairs" class="pairs skeleton"></div>
     </section>
   </main>
 
   <footer class="footer">
-    <span>PulseBoard © 2025 — Client-side app using CoinGecko & Dexscreener. For education only.</span>
+    <span>PulseBoard v2 © 2025 — Client-side app using CoinGecko & Dexscreener. Not financial advice.</span>
   </footer>
 
   <script src="app.js"></script>

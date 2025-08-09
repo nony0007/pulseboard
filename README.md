@@ -1,31 +1,22 @@
-# PulseBoard — Realtime Crypto With Heuristic Predictions
+# PulseBoard v2 — Live Design + 1s Price Updates (Selected Token)
 
-A frontend-only dashboard you can host on GitHub Pages. It shows:
-- Top coins with live prices (CoinGecko) and quick % changes.
-- Watchlist you can add/remove tokens to.
-- Token details view with a mini chart (last hour) and **simple heuristic predictions** for 1h/4h/24h:
-  - Based on recent trend (EMA of returns), volatility, and 24h volume.
-  - Outputs expected direction/size, a "likelihood" %, and a "confidence" %.
-- **New pairs feed** from Dexscreener across multiple chains (Ethereum, BSC, Polygon, Arbitrum, Base, Optimism, etc.).
+What's new vs v1:
+- **Refined design**: glassmorphism, animated status, cleaner cards, shimmering loaders.
+- **Live 1s updates for selected token** with adaptive backoff when rate-limited.
+- Smoother, no-legend mini chart that grows with 1s ticks (keeps last 60 points).
+- Same features: Top coins, watchlist, predictions (1h/4h/24h), new pairs from Dexscreener, fiat/interval controls.
 
-> ⚠️ Predictions are for **education/entertainment**. Not investment advice. Accuracy is not guaranteed.
+## Notes on "by second" updates
+- The selected token uses CoinGecko Simple Price every second. If the API rate-limits your IP, the app auto-backs off (2 → 5 → 10 → 20s) and resumes 1s when possible.
+- The **Top Coins** table refreshes on your chosen interval (default 5s) to reduce chances of rate-limit.
 
 ## Quick Start
 1. Download the ZIP and unzip.
-2. Open `index.html` in your browser.
-3. Use the search box to add tokens to your watchlist. Click a token to open details and predictions.
-4. Click **Newest** in the New Pairs section to see fresh launches.
+2. Open `index.html`. Add a token (e.g., bitcoin) and click it to open. The price ticks every second.
+3. Adjust update interval for the top list in the header.
+4. Use "New Pairs" to fetch latest pairs from Dexscreener.
 
 ## Deploy on GitHub Pages
-1. Create a new public repo (e.g., `pulseboard`).
-2. Drag & drop the three files (`index.html`, `style.css`, `app.js`).
-3. In **Settings → Pages**, set **Deploy from a branch** and folder `/root`. Save.
-4. Wait ~1 minute for Pages to go live.
+- Same as v1: push files to a public repo, then Settings → Pages → Deploy from branch → /root.
 
-## APIs
-- Prices & history: CoinGecko public API (no key). Rate limits may apply.
-- New pairs: Dexscreener public API.
-
-## Notes
-- If you see rate-limit messages, click **Refresh** or increase the interval to 30–60s.
-- Everything is saved in your browser (localStorage) — no server needed.
+> This dashboard is educational. Predictions are heuristics only and **not** financial advice.
